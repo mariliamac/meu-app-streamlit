@@ -1,23 +1,32 @@
+import scipy.stats
 import streamlit as st
-import numpy as np
-import pandas as pd
+import time
 
-st.title("Simulador de lançamentos de moeda 🪙")
+st.header('Jogando uma moeda')
 
-# Widget para escolher número de lançamentos
-num_lancamentos = st.number_input("Quantos lançamentos?", min_value=1, max_value=100, value=10)
+chart = st.line_chart([0.5])
 
-# Botão para iniciar
-if st.button("Lançar moeda"):
-    resultados = np.random.choice([0, 1], size=num_lancamentos)  # 0 = coroa, 1 = cara
-    media = np.mean(resultados)
+def toss_coin(n):
 
-    st.write(f"Média dos resultados: {media:.2f}")
+    trial_outcomes = scipy.stats.bernoulli.rvs(p=0.5, size=n)
 
-    # Mostrar gráfico
-    st.line_chart(resultados)
+    mean = None
+    outcome_no = 0
+    outcome_1_count = 0
 
-    # Mostrar tabela
-    df = pd.DataFrame({"Resultado": resultados})
-    st.write("Tabela de resultados:")
-    st.dataframe(df)
+    for r in trial_outcomes:
+        outcome_no +=1
+        if r == 1:
+            outcome_1_count += 1
+        mean = outcome_1_count / outcome_no
+        chart.add_rows([mean])
+        time.sleep(0.05)
+
+    return mean
+
+number_of_trials = st.slider('Número de tentativas?', 1, 1000, 10)
+start_button = st.button('Executar')
+
+if start_button:
+    st.write(f'Executando o experimento de {number_of_trials} tentativas.')
+    mean = toss_coin(number_of_trials)
