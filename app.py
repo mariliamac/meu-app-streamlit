@@ -3,7 +3,7 @@ import scipy.stats
 import streamlit as st
 import time
 
-# estas são variáveis persistentes preservadas à medida que o Streamlit executa novamente esse script
+# variáveis persistentes preservadas à medida que o Streamlit executa novamente esse script
 if 'experiment_no' not in st.session_state:
     st.session_state['experiment_no'] = 0
 
@@ -12,24 +12,24 @@ if 'df_experiment_results' not in st.session_state:
 
 st.header('Jogando uma moeda')
 
-chart = st.line_chart([0.5])
-
 def toss_coin(n):
-
     trial_outcomes = scipy.stats.bernoulli.rvs(p=0.5, size=n)
 
     mean = None
     outcome_no = 0
     outcome_1_count = 0
+    valores = []  # lista para acumular os resultados
 
     for r in trial_outcomes:
-        outcome_no +=1
+        outcome_no += 1
         if r == 1:
             outcome_1_count += 1
         mean = outcome_1_count / outcome_no
-        # substituímos add_rows por line_chart
-        chart = st.line_chart([mean])
+        valores.append(mean)
         time.sleep(0.05)
+
+    # mostra o gráfico com todos os valores acumulados
+    st.line_chart(valores)
 
     return mean
 
