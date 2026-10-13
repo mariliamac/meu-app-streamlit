@@ -1,13 +1,23 @@
 import streamlit as st
+import numpy as np
+import pandas as pd
 
-st.header('Jogando uma moeda')
+st.title("Simulador de lançamentos de moeda 🪙")
 
-number_of_trials = st.slider('Número de tentativas?', 1, 1000, 10)
-start_button = st.button('Executar')
+# Widget para escolher número de lançamentos
+num_lancamentos = st.number_input("Quantos lançamentos?", min_value=1, max_value=100, value=10)
 
-if start_button:
-    st.write(f'Executando o experimento de {number_of_trials} tentativas.')
+# Botão para iniciar
+if st.button("Lançar moeda"):
+    resultados = np.random.choice([0, 1], size=num_lancamentos)  # 0 = coroa, 1 = cara
+    media = np.mean(resultados)
 
-st.write('Ainda não é um aplicativo funcional. Em construção.')
-st.write('Ainda não é um aplicativo funcional. Em construção.')
+    st.write(f"Média dos resultados: {media:.2f}")
 
+    # Mostrar gráfico
+    st.line_chart(resultados)
+
+    # Mostrar tabela
+    df = pd.DataFrame({"Resultado": resultados})
+    st.write("Tabela de resultados:")
+    st.dataframe(df)
