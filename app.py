@@ -9,3 +9,5 @@ if start_button:
     st.write(f'Executando o experimento de {number_of_trials} tentativas.')
 
 st.write('Ainda não é um aplicativo funcional. Em construção.')
+st.write('Ainda não é um aplicativo funcional. Em construção.')
+
